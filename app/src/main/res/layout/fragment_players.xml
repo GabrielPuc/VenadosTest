@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.tabs.PlayersFragment">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/players_screen_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent"
+        app:layout_collapseMode="pin"
+        app:navigationIcon="@drawable/ic_menu_black_24dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_marginTop="?attr/actionBarSize"
+        android:id="@+id/swipeRefreshLayoutPlayers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <GridView
+        android:id="@+id/players_grid"
+        android:columnCount="3"
+        android:alignmentMode="alignMargins"
+        android:columnOrderPreserved="false"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:horizontalSpacing="10dp"
+        android:padding="14dp" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</RelativeLayout>

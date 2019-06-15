@@ -12,4 +12,7 @@ public class Data {
     @SerializedName("statistics")
     public List<Stat> stats;
 
+    @SerializedName("team")
+    public Team team;
+
 }

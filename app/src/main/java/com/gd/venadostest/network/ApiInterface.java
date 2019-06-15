@@ -17,4 +17,8 @@ public interface ApiInterface {
     @GET("/api/statistics")
     Call<BasicResponse> getStats();
 
+    @Headers("Accept:application/json")
+    @GET("/api/players")
+    Call<BasicResponse> getPlayers();
+
 }

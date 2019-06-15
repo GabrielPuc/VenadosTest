@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.gd.venadostest.R;
 import com.gd.venadostest.fragments.HomeFragment;
+import com.gd.venadostest.fragments.tabs.PlayersFragment;
 import com.gd.venadostest.fragments.tabs.StatsFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_item_stat) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContent, new StatsFragment()).commit();
         } else if (id == R.id.nav_item_players) {
-            Toast.makeText(this, "Clicked item three", Toast.LENGTH_SHORT).show();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContent, new PlayersFragment()).commit();
         }
 
         drawer.closeDrawer(GravityCompat.START);
