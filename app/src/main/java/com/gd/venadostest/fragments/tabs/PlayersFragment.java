@@ -7,11 +7,17 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gd.venadostest.R;
@@ -21,13 +27,19 @@ import com.gd.venadostest.models.Stat;
 import com.gd.venadostest.network.ApiInterface;
 import com.gd.venadostest.network.responses.BasicResponse;
 import com.gd.venadostest.utils.RetrofitUtils;
+import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +71,7 @@ public class PlayersFragment extends Fragment implements AdapterView.OnItemClick
         gridview.setAdapter(playersAdapter);
         gridview.setNumColumns(3);
         //gridview.setOnClickListener(this);
+        gridview.setOnItemClickListener(this);
 
         getPlayers();
 
@@ -106,10 +119,66 @@ public class PlayersFragment extends Fragment implements AdapterView.OnItemClick
         });
     }
 
+    TextView name,positionP,birthday,birthplace,weight,heightP,last_team;
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(getActivity(), players.get(position).name,
-                Toast.LENGTH_SHORT).show();
+        Players player = players.get(position);
+
+        LayoutInflater inflater = (LayoutInflater)
+                getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.window_player_detail, null);
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.MATCH_PARENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        Picasso.get().load(player.image).into((ImageView) popupView.findViewById(R.id.popup_player_image));
+
+        name = popupView.findViewById(R.id.popup_player_name);
+        name.setText(player.name);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            Date date1 = dateFormat.parse(player.birthday);
+            String dates = dateFormat.format(date1);
+            birthday = popupView.findViewById(R.id.popup_player_birthday);
+            birthday.setText(dates);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        birthplace = popupView.findViewById(R.id.popup_player_birthplace);
+        birthplace.setText(player.birth_place);
+
+        weight = popupView.findViewById(R.id.popup_player_weight);
+        weight.setText(String.valueOf(player.weight));
+
+        heightP = popupView.findViewById(R.id.popup_player_height);
+        heightP.setText(String.valueOf(player.height));
+
+        last_team = popupView.findViewById(R.id.popup_player_last_team);
+        last_team.setText(player.last_team);
+
+        positionP = popupView.findViewById(R.id.popup_player_position);
+        if(player.position != null){
+            positionP.setText(player.position);
+        }else{
+            positionP.setText(player.role);
+        }
+
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
+
     }
 
 }
