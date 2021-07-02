@@ -1,0 +1,30 @@
+package com.macro.picking_id.storage.database;
+
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
+
+import com.macro.picking_id.model.Note;
+
+import java.util.List;
+
+@Dao
+public interface NoteDao {
+
+    @Query("SELECT * FROM note")
+    List<Note> getNotas();
+
+    @Query("SELECT * FROM note WHERE mId LIKE :uuid")
+    Note getNota(String uuid);
+
+    @Insert
+    void addNote(Note book);
+
+    @Delete
+    void deleteNota(Note book);
+
+    @Update
+    void updateNote(Note book);
+}
